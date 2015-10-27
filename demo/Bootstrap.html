@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Duploadr Bootstrap Demo</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+    <h3>单个文件上传</h3>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <input type="text" class="form-control" readonly="readonly" id="upload_url">
+        		    <button class="btn btn-primary" id="upload" >上传文件</button>
+      			</span>
+            </div>
+        </div>
+    </div>
+    <h3>多个文件上传</h3>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" id="upload_multiple" upload-type="multiple">上传文件</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">已选择文件</h4>
+                </div>
+                <div class="modal-body" id="file_list">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="file_select">选择</button>
+                    <button type="button" class="btn btn-primary" id="file_upload">上传</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../lib/json.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/Duploader.core.js"></script>
+<script type="text/javascript" src="../lib/Duploader.bootstrap.js"></script>
+<script type="text/javascript">
+DuploaderBootstrap.bind("upload",function(data) {
+    console.log(data);
+    $("#upload_url").val(data.name);
+});
+
+DuploaderBootstrap.bind("upload_multiple",function(data) {
+    console.log(data);
+});
+
+</script>

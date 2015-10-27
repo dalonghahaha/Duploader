@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Duploadr Demo</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<p>
+		<input type="button" id="file_select" value="添加文件">
+	</p>
+	<p>
+		<input type="button" id="file_upload" value="开始上传" onclick="Duploadr.upload()">
+	</p>
+	<section id="file_list">
+	</section>
+	<hr>
+	<section id="log_info"></section>
+</body>
+</html>
+<script type="text/javascript" src="../lib/json.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.min.js"></script>
+<script type="text/javascript" src="../lib/Duploader.core.js"></script>
+<script type="text/javascript">
+	function write_log(info){
+		$("#log_info").append("<p>" + info +"</p>");
+	}
+
+	/*
+	Duploadr.init({
+		debug:false,
+		upload_url: "ws://duploader.me:2345",
+	});	
+	*/
+
+	var Duploader = new Duploader({
+		chunk_size:1024,
+		btn_add:'file_select',
+		btn_upload:'file_upload',
+		upload_url: "ws://duploader.me:2345"
+	});
+
+	Duploader.debug('我尼玛');
+</script>
