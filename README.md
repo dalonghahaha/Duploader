@@ -1,2 +1,2 @@
 # Duploader
-smart uploader  111
+smart uploader
