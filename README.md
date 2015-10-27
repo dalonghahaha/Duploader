@@ -1,2 +1,2 @@
 # Duploader
-smart uploader open by dengjialong
+smart uploader 
