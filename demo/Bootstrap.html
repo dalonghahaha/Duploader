@@ -54,13 +54,18 @@
 <script type="text/javascript" src="../lib/Duploader.core.js"></script>
 <script type="text/javascript" src="../lib/Duploader.bootstrap.js"></script>
 <script type="text/javascript">
-DuploaderBootstrap.bind("upload",function(data) {
-    console.log(data);
-    $("#upload_url").val(data.name);
+var upload = new DuploaderBootstrap({
+    'id':'upload',
+    'success_callback':function() {
+        alert('上传完毕');
+    }
 });
 
-DuploaderBootstrap.bind("upload_multiple",function(data) {
-    console.log(data);
+var upload_multiple = new DuploaderBootstrap({
+    'id':'upload_multiple',
+    'success_callback':function() {
+        alert('上传完毕');
+    }
 });
 
 </script>

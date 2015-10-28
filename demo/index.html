@@ -9,9 +9,18 @@
 		<input type="button" id="file_select" value="添加文件">
 	</p>
 	<p>
-		<input type="button" id="file_upload" value="开始上传" onclick="Duploadr.upload()">
+		<input type="button" id="file_upload" value="开始上传">
 	</p>
 	<section id="file_list">
+	</section>
+	<hr>
+	<p>
+		<input type="button" id="file_select_1" value="添加文件">
+	</p>
+	<p>
+		<input type="button" id="file_upload_1" value="开始上传">
+	</p>
+	<section id="file_list_1">
 	</section>
 	<hr>
 	<section id="log_info"></section>
@@ -21,23 +30,25 @@
 <script type="text/javascript" src="../lib/jquery.min.js"></script>
 <script type="text/javascript" src="../lib/Duploader.core.js"></script>
 <script type="text/javascript">
-	function write_log(info){
-		$("#log_info").append("<p>" + info +"</p>");
-	}
 
-	/*
-	Duploadr.init({
-		debug:false,
-		upload_url: "ws://duploader.me:2345",
-	});	
-	*/
-
-	var Duploader = new Duploader({
-		chunk_size:1024,
+	var Duploader_1 = new Duploader({
+		debug:true,
+		chunk:true,
 		btn_add:'file_select',
 		btn_upload:'file_upload',
+		section_file_list:'file_list',
+		upload_url: "ws://duploader.me:2345"
+	});
+	//Duploader_1.init();
+
+	var Duploader_2 = new Duploader({
+		debug:true,
+		chunk:true,
+		btn_add:'file_select_1',
+		btn_upload:'file_upload_1',
+		section_file_list:'file_list_1',
 		upload_url: "ws://duploader.me:2345"
 	});
 
-	Duploader.debug('我尼玛');
+	//Duploader_2.init();
 </script>
