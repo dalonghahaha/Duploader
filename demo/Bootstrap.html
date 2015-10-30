@@ -28,20 +28,13 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">已选择文件</h4>
-                </div>
-                <div class="modal-body" id="file_list">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="file_select">选择</button>
-                    <button type="button" class="btn btn-primary" id="file_upload">上传</button>
-                </div>
+    <h3>websocket上传</h3>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" id="upload_websocket">上传文件</button>
+                </span>
             </div>
         </div>
     </div>
@@ -55,17 +48,29 @@
 <script type="text/javascript" src="../lib/Duploader.bootstrap.js"></script>
 <script type="text/javascript">
 var upload = new DuploaderBootstrap({
-    'id':'upload',
-    'success_callback':function() {
+    id:'upload',
+    upload_url: "http://duploader.me/Server/upload.php",
+    upload_type: "post",
+    success_callback:function() {
         alert('上传完毕');
     }
 });
 
 var upload_multiple = new DuploaderBootstrap({
-    'id':'upload_multiple',
-    'success_callback':function() {
+    id:'upload_multiple',
+    upload_url: "http://duploader.me/Server/upload.php",
+    upload_type: "post",
+    success_callback:function() {
         alert('上传完毕');
     }
 });
 
+var upload_websocket = new DuploaderBootstrap({
+    id:'upload_websocket',
+    upload_url: "ws://duploader.me:2345",
+    upload_type: "websocket",
+    success_callback:function() {
+        alert('上传完毕');
+    }
+});
 </script>
