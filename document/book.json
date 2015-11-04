@@ -1,0 +1,27 @@
+{
+    "output": "../gitbook",
+    "generator": "site",
+    "title": "Duploader说明文档",
+    "description": "Duploader说明文档",
+    "github": "https://github.com/dalonghahaha/Duploader",
+    "plugins":[],
+    "pluginsConfig": {
+        "fontSettings": {
+            "theme": "sepia",
+            "family": "serif",
+            "size": 1
+        }
+    },
+    "links": {
+        "sidebar": {
+            "龙翔云际的实验室": "http://dalong.me"
+        },
+        "sharing": {
+            "google": null,
+            "facebook": null,
+            "twitter": null,
+            "weibo": null,
+            "all": null
+        }
+    }
+}
