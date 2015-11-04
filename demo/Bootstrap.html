@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Duploadr Bootstrap Demo</title>
     <meta charset="utf-8">
@@ -39,26 +38,25 @@
         </div>
     </div>
 </body>
-
 </html>
-<script type="text/javascript" src="../lib/json.min.js"></script>
-<script type="text/javascript" src="../lib/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/Duploader.core.js"></script>
 <script type="text/javascript" src="../lib/Duploader.bootstrap.js"></script>
 <script type="text/javascript">
 var upload = new DuploaderBootstrap({
     id:'upload',
-    upload_url: "http://duploader.me/Server/upload.php",
+    upload_url: "../demo_server/PHP/upload.php",
     upload_type: "post",
-    success_callback:function() {
-        alert('上传完毕');
+    success_callback:function(result) {
+        console.log(result);
+        $("#upload_url").val(result.file_path);
     }
 });
 
 var upload_multiple = new DuploaderBootstrap({
     id:'upload_multiple',
-    upload_url: "http://duploader.me/Server/upload.php",
+    upload_url: "../demo_server/PHP/upload.php",
     upload_type: "post",
     success_callback:function() {
         alert('上传完毕');
@@ -67,7 +65,7 @@ var upload_multiple = new DuploaderBootstrap({
 
 var upload_websocket = new DuploaderBootstrap({
     id:'upload_websocket',
-    upload_url: "ws://duploader.me:2345",
+    upload_url: "ws://localhost:2345",
     upload_type: "websocket",
     success_callback:function() {
         alert('上传完毕');
