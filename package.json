@@ -1,0 +1,23 @@
+{
+    "name": "Duploader",
+    "description": "Smart File Uploader",
+    "keywords": [
+        "Websocket",
+        "Uploader",
+        "localStorage"
+    ],
+    "version": "1.0.0",
+    "author": "Deng Jia Long <dalonghahaha@163.com> (http://dalong.me)",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dalonghahaha/Duploader.git"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.0",
+        "gulp-uglify": "~1.2.0",
+        "gulp-rename": "~1.2.2",
+        "gulp-concat":"~2.6.0",
+        "gulp-utf8-convert":"0.0.7"
+    }
+}
