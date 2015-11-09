@@ -9,5 +9,8 @@
 	//上传文件保存路径
     define("UPLOAD_ROOT","../../upload/");
 
+    //上传文件真实路径
+    define("REAL_ROOT","upload/");
+
     //日志根目录
     define("LOG_ROOT","../../logs/uploadsocket/");

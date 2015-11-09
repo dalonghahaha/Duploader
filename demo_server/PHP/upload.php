@@ -48,7 +48,7 @@
                 if($file->moveFile(UPLOAD_TEMP_ROOT.$info['name'],$real_url)){
                     $logger->info("移动文件【".$info['name']."】结束");
                     $info['result'] = 1;
-                    $info['real_url'] = $real_url;
+                    $info['real_url'] = REAL_ROOT.date('Ymd')."/".$file_real_name.".".$file_extension;
 
                 } else {
                     $info['result'] = -2;
