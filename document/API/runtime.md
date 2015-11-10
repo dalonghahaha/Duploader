@@ -24,6 +24,9 @@
     //上传锁
     uploading:false,
 
+    //文件id
+    file_id: null,
+
     //文件列表
     file_list: [],
 
@@ -61,5 +64,14 @@
     total: 切片总数,
     result: 上传结果，1为成功，负数为失败
     real_url: 真实文件路径，该节点默认在最后一个切片上传完成后返回
+}
+```
+
+###上传完成后的回调数据，多个文件上传模式时为列表
+```js
+{
+    file_index: 文件索引,
+    file_name: 文件名,
+    file_path: 保存路径
 }
 ```

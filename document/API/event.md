@@ -7,6 +7,11 @@
 * **参数:**
 	- **info:**错误信息
 
+###on_alert
+* **描述:**发出警告
+* **参数:**
+	- **info:**警告信息
+
 ###on_file_selected
 * **描述:**选择文件完成
 * **参数:**
@@ -42,7 +47,7 @@
 	- 此事件多用于在多文件上传时在界面中自定义显示文件信息的变化。
 	- 此事件只会在多文件上传模式中才能生效
 
-###on_file_uploading
+###on_upload_begin
 * **描述:**文件开始上传
 * **参数:**
 	- **uoloader:**Duploader控件实例
@@ -55,13 +60,13 @@
 	- **slice_upload_result:**分片上传结果
 
 ###on_file_upload_finish
-* **描述:**文件上传完成
+* **描述:**文件队列中单一文件上传完成
 * **参数:**
 	- **upload_count:**上传完毕文件计数
 	- **upload_result:**上传结果
 
-###on_file_list_upload_finish
-* **描述:**队列上传完成
+###on_upload_finish
+* **描述:**上传完成
 * **参数:**
 	- **upload_count:**上传完毕文件计数
 	- **upload_result:**上传结果
