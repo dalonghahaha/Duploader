@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Duploader Demo</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="../theme/default.css">
+</head>
+<body>
+	<div style="width:100%">
+		<input style="width:400px" type="text" id="file_path" value="">
+		<input type="button" id="file_select" value="添加文件">
+        <input style="margin-left:5px" type="button" id="file_upload" value="开始上传">
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="../src/constructor.js"></script>
+<script type="text/javascript" src="../src/api.js"></script>
+<script type="text/javascript" src="../src/tool.js"></script>
+<script type="text/javascript" src="../src/build.js"></script>
+<script type="text/javascript" src="../src/delegate.js"></script>
+<script type="text/javascript" src="../src/uploader.js"></script>
+<script type="text/javascript">
+	var uploader = new Duploader({
+	    debug: true,
+	    btn_open: 'file_select',
+	    upload_url: "../demo_server/PHP/upload.php",
+	    upload_type: "post"
+	});
+	uploader.on('finish',function(result){
+		var file_path = document.getElementById("file_path");
+        if (file_path) {
+            file_path.value = result.file_path;
+        }
+	});
+</script>

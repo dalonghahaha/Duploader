@@ -1,0 +1,125 @@
+/**
+ * Duploader - Smart File Uploader
+ *
+ * Version - 1.0.0
+ *
+ * Copyright 2015,Dengjialong
+ * 
+ */
+
+/**
+ * 构造函数
+ * @param  config 配置项
+ */
+function Duploader(config) {
+    //初始化配置
+    this.build_config(config);
+    //检查配置项是否正确
+    if(!this.check_config()){
+        return;
+    }
+    //检查浏览器环境是否支持控件
+    if(!this.check_environment()){
+        return;
+    }
+    //初始化运行时数据
+    this.build_runtime();
+    //初始化控件
+    this.build_uploader();
+}
+
+/**
+ * 设置配置项
+ * @param config   配置项
+ * @param property 属性名
+ * @param value    属性值
+ */
+Duploader.prototype.set_config = function(config, property, value) {
+    Object.defineProperty(config, property, {
+        value: value,
+        writable: false, //不可写
+        configurable: false, //不可删除
+        enumerable: false //不可枚举
+    });
+}
+
+/**
+ * 初始化配置文件
+ * @param  config 配置项
+ */
+Duploader.prototype.build_config = function(config) {
+    //默认配置项
+    var _config = {
+        //是否多文件上传模式
+        multiple: false,
+        //调试开关
+        debug: false,
+        //是否分片上传
+        chunk: false,
+        //分片大小
+        chunk_size: 2 * 1024 * 1024,
+        //是否启动断点续传
+        resume_broken: false,
+        //文件选择器类别过滤
+        accept_mime: null,
+        //文件后缀名限制
+        extend_limited: null,
+        //文件大小限制
+        size_limited: null,
+        //控件打开按钮
+        btn_open: null,
+        //上传地址
+        upload_url: null,
+        //上传类型
+        upload_type: "websocket"
+    }
+    if (config) {
+        for (var p in config) {
+            _config[p] = config[p];
+        }
+    }
+    this.config = Object.create({});
+    for (var p in _config) {
+        this.set_config(this.config, p, _config[p]);
+    }
+}
+
+/**
+ * 初始化运行时数据
+ */
+Duploader.prototype.build_runtime = function() {
+    this.runtime = {
+        //标识
+        _id: 0,
+        //上传控件实例
+        instance:null,
+        //websocket链接
+        socket: null,
+        //上传锁
+        uploading: false,
+        //文件id
+        file_id: null,
+        //文件列表
+        file_list: [],
+        //上传计数
+        upload_count: 0,
+        //上传结果
+        upload_result: []
+    };
+}
+
+/**
+ * 校验配置文件
+ */
+Duploader.prototype.check_config = function() {
+    this.debug(this.config);
+    return true;
+}
+
+/**
+ * 校验浏览器环境
+ */
+Duploader.prototype.check_environment = function() {
+    return true;
+}
+
