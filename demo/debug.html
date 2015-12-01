@@ -8,28 +8,33 @@
 <body>
 	<div style="width:100%">
 		<input style="width:400px" type="text" id="file_path" value="">
-		<input type="button" id="file_select" value="添加文件">
-        <input style="margin-left:5px" type="button" id="file_upload" value="开始上传">
+		<input type="button" id="file_select" value="上传">
 	</div>
 </body>
 </html>
 <script type="text/javascript" src="../src/constructor.js"></script>
 <script type="text/javascript" src="../src/api.js"></script>
 <script type="text/javascript" src="../src/tool.js"></script>
-<script type="text/javascript" src="../src/build.js"></script>
+<script type="text/javascript" src="../src/view.js"></script>
 <script type="text/javascript" src="../src/delegate.js"></script>
 <script type="text/javascript" src="../src/uploader.js"></script>
+<script type="text/javascript" src="../src/event.js"></script>
+<script type="text/javascript" src="../src/message.js"></script>
 <script type="text/javascript">
 	var uploader = new Duploader({
 	    debug: true,
+	    chunk: true,
 	    btn_open: 'file_select',
-	    upload_url: "../demo_server/PHP/upload.php",
-	    upload_type: "post"
+	    upload_url: "ws://localhost:2345",
+    	upload_type: "websocket",
 	});
-	uploader.on('finish',function(result){
+	uploader.on('result',function(result){
 		var file_path = document.getElementById("file_path");
         if (file_path) {
             file_path.value = result.file_path;
         }
 	});
+	uploader.on('file_add',function(file_info){
+		this.debug(file_info);
+	})
 </script>

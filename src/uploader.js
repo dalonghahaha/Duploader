@@ -1,10 +1,29 @@
-
-Duploader.prototype.open_uploader = function(event){
-    this.runtime.instance.style.width =  document.body.scrollWidth + "px";
-    this.runtime.instance.style.height = document.body.scrollHeight + "px";
+/**
+ * 打开上传控件
+ * event 事件对象
+ */
+Duploader.prototype.open_uploader = function(event) {
+    this.query_element(this._class.MASK).style.width = document.body.scrollWidth + "px";
+    this.query_element(this._class.MASK).style.height = document.body.scrollHeight + "px";
     this.query_element(this._class.OPERATION).style.left = (document.body.scrollWidth - 400) / 2 + "px";
-    this.query_element(this._class.OPERATION).style.top = (document.body.scrollHeight - 300) / 2 + "px";
-    this.query_element(this._class.BASE).remove_class(this._class.HIDDEN);
+    this.query_element(this._class.OPERATION).style.top = (document.body.scrollHeight - 100) / 2 + "px";
+    this.query_element(this._class.MASK).remove_class(this._class.HIDDEN);
+    this.query_element(this._class.OPERATION).remove_class(this._class.HIDDEN);
+}
+
+/**
+ * 关闭上传控件
+ * event 事件对象
+ */
+Duploader.prototype.close_uploader = function(event) {
+    this.query_element(this._class.FILE_LIST).innerHTML = '';
+    this.runtime.uploading = false;
+    this.runtime.file_id = null;
+    this.runtime.file_list = [];
+    this.runtime.upload_count = 0;
+    this.runtime.upload_result = [];
+    this.query_element(this._class.MASK).add_class(this._class.HIDDEN);
+    this.query_element(this._class.OPERATION).add_class(this._class.HIDDEN);
 }
 
 /**
@@ -13,7 +32,7 @@ Duploader.prototype.open_uploader = function(event){
  * @param  file_id 操作的文件标识，如果有此标识则为重新选择文件，如果没有则为新增文件
  */
 Duploader.prototype.open_select = function(event, file_id) {
-    this.debug("open_select");
+    this.debug("event open_select");
     if (this.runtime.uploading) {
         this.alert('文件已经在上传了');
         return false;
@@ -26,6 +45,34 @@ Duploader.prototype.open_select = function(event, file_id) {
 }
 
 /**
+ * 切换文件按钮事件
+ * @param  event 事件对象
+ */
+Duploader.prototype.file_change = function(event) {
+    var btn_file_change = event.currentTarget;
+    var file_id = btn_file_change.getAttribute("file_id");
+    if (!file_id) {
+        this.error('file_id异常');
+    } else {
+        this.open_select(event, file_id);
+    }
+}
+
+/**
+ * 删除文件按钮事件
+ * @param  event 事件对象
+ */
+Duploader.prototype.file_remove = function(event) {
+    var btn_file_remove = event.currentTarget;
+    var file_id = btn_file_remove.getAttribute("file_id");
+    if (!file_id) {
+        this.error('file_id异常');
+    } else {
+        this.file_removed(file_id);
+    }
+}
+
+/**
  * 开始上传
  * event 事件对象
  */
@@ -35,7 +82,6 @@ Duploader.prototype.upload = function(event) {
         return false;
     }
     if (this.runtime.file_list.length > 0) {
-        this.debug('upload begin');
         //文件上传锁
         this.runtime.uploading = true;
         if (this.config.upload_type == "websocket" && !this.runtime.socket) {
@@ -51,48 +97,69 @@ Duploader.prototype.upload = function(event) {
 }
 
 /**
- * 文件选择回调函数
- * @param  event 事件对象
+ * 文件整体上传
+ * @param  file_index  文件列表索引
  */
-Duploader.prototype.file_selected = function(event) {
-    var file_info = this.runtime.selector.files[0];
-    if (!file_info) {
-        this.error('获取文件信息失败');
-        return false;
+Duploader.prototype.file_whole_upload = function(file_index) {
+    var file_info = this.runtime.file_list[file_index]; //文件信息
+    var reader = new window.FileReader();
+    reader.readAsDataURL(file_info);
+    reader.onloadend = function() {
+        var base64data_begin_index = reader.result.lastIndexOf(',') + 1;
+        this.file_send({
+            file_index: file_index,
+            name: file_info.name,
+            size: file_info.size,
+            start: 0,
+            end: file_info.size,
+            index: 0,
+            total: 1,
+            data: reader.result.substr(base64data_begin_index)
+        });
+    }.bind(this);
+};
+
+/**
+ * 文件切片上传
+ * @param  file_index  文件列表索引
+ * @param  slice_count 切片总数
+ * @param  index       切片索引
+ */
+Duploader.prototype.file_slice_upload = function(file_index, slice_count, index) {
+    if ((index + 1) > slice_count) {
+        console.error('文件分片分片错误!');
+        return;
     }
-    //文件后缀名校验
-    if (!this.check_file_extend(file_info)) {
-        return false;
-    }
-    //文件大小校验
-    if (!this.check_file_size(file_info)) {
-        return false;
-    }
-    //自定义校验
-    if (this.config.on_file_selected && this.config.on_file_selected instanceof Function) {
-        if (!this.config.on_file_selected(file_info)) {
-            return false;
-        }
-    }
-    //尝试获取断点
-    file_info.begin_index = this.get_file_broken_point(file_info);
-    //根据不同状态调用不同的处理函数
-    if (this.config.multiple) {
-        if (this.runtime.selector.getAttribute("file_id") && this.runtime.selector.getAttribute("file_id") != 0) {
-            file_info.id = this.runtime.selector.getAttribute("file_id");
-            this.file_changed(event, file_info);
-        } else {
-            file_info.id = new Date().getTime();
-            this.file_added(event, file_info);
-        }
+    var file_info = this.runtime.file_list[file_index]; //文件信息
+    var index = index ? index : 0; //分片索引
+    var start = index * this.config.chunk_size; //开始位置
+    var end = Math.min(file_info.size, start + this.config.chunk_size); //结束位置
+    var reader = new window.FileReader();
+    reader.readAsDataURL(file_info.slice(start, end));
+    reader.onloadend = function() {
+        var base64data_begin_index = reader.result.lastIndexOf(',') + 1;
+        this.file_send({
+            file_index: file_index,
+            name: file_info.name,
+            size: file_info.size,
+            start: start,
+            end: end,
+            index: index,
+            total: slice_count,
+            data: reader.result.substr(base64data_begin_index)
+        });
+    }.bind(this);
+}
+
+/**
+ * 发送文件数据
+ * @param  data 上传数据
+ */
+Duploader.prototype.file_send = function(data) {
+    if (this.config.upload_type == "websocket" && this.runtime.socket) {
+        this.websocket_send(data);
     } else {
-        if (this.runtime.file_id) {
-            file_info.id = this.runtime.file_id;
-            this.file_changed(event, file_info);
-        } else {
-            file_info.id = new Date().getTime();
-            this.file_added(event, file_info);
-        }
+        this.post_send(data);
     }
 }
 

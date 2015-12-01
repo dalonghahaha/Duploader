@@ -37,6 +37,14 @@ Duploader.prototype.warn = function(info) {
 }
 
 /**
+ * 输出警告信息
+ * @param  info [警告信息]
+ */
+Duploader.prototype.alert = function(info) {
+    alert(info);
+}
+
+/**
  * 数组查找函数
  * @param  目标数组
  * @param  待查找元素
