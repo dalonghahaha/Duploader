@@ -1,8 +1,8 @@
-.Duploader{
+.Duploader {
     cursor: pointer;
     font-weight: normal;
     font-style: normal;
-    font-family: sans-serif;
+    font-family: 'Microsoft YaHei', STHeiti, 'WenQuanYi Micro Hei', SimSun, sans-serif;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -22,27 +22,30 @@
     opacity: 0.5;
 }
 
-.Hidden {
+.Duploader-Hidden {
     display: none;
+}
+
+.Duploader-Clear {
+    clear: both;
 }
 
 .Duploader .operation {
     background-color: #FFFFFF;
     position: absolute;
-    width: 400px;
-    height: 100px;
-    z-index: 501;
-    
+    width: 600px;
     z-index: 501;
     position: absolute;
     left: 0;
     top: 0;
+    border-radius: 4px;
     -moz-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
     -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
     bbox-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .Duploader .title {
+    margin-top: 10px;
     color: #333333;
     width: 100%;
     height: 2em;
@@ -55,21 +58,95 @@
 }
 
 .Duploader .file-list {
-    width: 100%;
+    width: 98%;
+    margin: 0 auto;
     font-size: 1em;
-    min-height: 20px;
     position: relative;
+    border: 1px solid transparent;
+    border-color: #cccccc;
+    padding-top: 10px;
+    border-radius: 4px;
 }
 
-.Duploader .file-list .file-info{
+.Duploader .file-list .file {
     width: 100%;
-    font-size: 0.8em;
-    min-height: 20px;
-    position: relative;
-    font-size: 1em;
-    padding-left: 30px;
 }
 
+.Duploader .file-list .file-section {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 10px;
+}
+
+.Duploader .file-list .file-info {
+    font-size: .8em;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 26px;
+    float: left;
+}
+
+.Duploader .file-list .file-change {
+    position: relative;
+    border: 1px solid transparent;
+    color: #FFFFFF;
+    text-align: center;
+    min-width: 40px;
+    border-radius: 4px;
+    background-color: #5cb85c;
+    font-size: .8em;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 20px;
+    float: right;
+}
+
+.Duploader .file-list .file-remove {
+    position: relative;
+    border: 1px solid transparent;
+    color: #FFFFFF;
+    text-align: center;
+    min-width: 40px;
+    border-radius: 4px;
+    background-color: #d9534f;
+    font-size: .8em;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 20px;
+    float: right;
+}
+
+.Duploader .file-list .progress-section {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 10px;
+}
+
+.Duploader .file-list .progress-bar {
+    width: 500px;
+    height: 8px;
+    line-height: 8px;
+    border: 1px solid transparent;
+    border-color: #999999;
+    margin-left: 26px;
+    float: left;
+    margin-top: 5px;
+}
+
+.Duploader .file-list .progress-info {
+    width: 0.1%;
+    height: 8px;
+    line-height: 8px;
+    background-color: #FFC000;
+}
+
+.Duploader .file-list .progress-text {
+    font-size: 0.6em;
+    margin-left: 10px;
+    float: left;
+}
 
 .Duploader .button {
     margin-top: .5em;
@@ -81,29 +158,28 @@
 
 .Duploader .button .button-base {
     float: left;
+    vertical-align: middle;
     margin-left: 30px;
-    padding: 5px 5px 5px 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
     text-align: center;
     min-width: 60px;
-    height: 1.5em;
-    line-height: 1.5em;
-    filter: alpha(opacity=80);
-    -moz-opacity: 0.8;
-    -khtml-opacity: 0.8;
-    opacity: 0.8;
+    height: 2em;
+    line-height: 2em;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 .Duploader .button .button-add {
-    background-color: #0066FF;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
 }
 
 .Duploader .button .button-upload {
-    background-color: #00CC33;
+    background-color: #428bca;
+    border-color: #357ebd;
 }
 
 .Duploader .button .button-cancel {
-    background-color: #CC0033;
+    background-color: #d9534f;
+    border-color: #d43f3a;
 }

@@ -5,8 +5,8 @@
 Duploader.prototype.open_uploader = function(event) {
     this.query_element(this._class.MASK).style.width = document.body.scrollWidth + "px";
     this.query_element(this._class.MASK).style.height = document.body.scrollHeight + "px";
-    this.query_element(this._class.OPERATION).style.left = (document.body.scrollWidth - 400) / 2 + "px";
-    this.query_element(this._class.OPERATION).style.top = (document.body.scrollHeight - 100) / 2 + "px";
+    this.query_element(this._class.OPERATION).style.left = (document.body.scrollWidth - 600) / 2 + "px";
+    this.query_element(this._class.OPERATION).style.top = 200 + "px";
     this.query_element(this._class.MASK).remove_class(this._class.HIDDEN);
     this.query_element(this._class.OPERATION).remove_class(this._class.HIDDEN);
 }
@@ -24,6 +24,7 @@ Duploader.prototype.close_uploader = function(event) {
     this.runtime.upload_result = [];
     this.query_element(this._class.MASK).add_class(this._class.HIDDEN);
     this.query_element(this._class.OPERATION).add_class(this._class.HIDDEN);
+    this.query_element(this._class.FILE_LIST).add_class(this._class.HIDDEN);
 }
 
 /**
@@ -49,7 +50,7 @@ Duploader.prototype.open_select = function(event, file_id) {
  * @param  event 事件对象
  */
 Duploader.prototype.file_change = function(event) {
-    var btn_file_change = event.currentTarget;
+    var btn_file_change = event.target || event.srcElement;
     var file_id = btn_file_change.getAttribute("file_id");
     if (!file_id) {
         this.error('file_id异常');
@@ -63,7 +64,7 @@ Duploader.prototype.file_change = function(event) {
  * @param  event 事件对象
  */
 Duploader.prototype.file_remove = function(event) {
-    var btn_file_remove = event.currentTarget;
+    var btn_file_remove = event.target || event.srcElement;
     var file_id = btn_file_remove.getAttribute("file_id");
     if (!file_id) {
         this.error('file_id异常');
@@ -156,6 +157,11 @@ Duploader.prototype.file_slice_upload = function(file_index, slice_count, index)
  * @param  data 上传数据
  */
 Duploader.prototype.file_send = function(data) {
+    var file_info = this.runtime.file_list[data.file_index];
+    var num = parseFloat(data.index + 1);
+    var total = parseFloat(data.total);
+    //显示上传进度
+    this.change_progress_info(file_info.id, this.format_percent(num, total));
     if (this.config.upload_type == "websocket" && this.runtime.socket) {
         this.websocket_send(data);
     } else {

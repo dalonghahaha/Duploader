@@ -6,14 +6,14 @@
  */
 Duploader.prototype.delegate = function(class_name, event_name, fun) {
     var root = this.runtime.instance;
-    root.addEventListener(event_name, function(event) { 
+    root.addEventListener(event_name, function(event) {
         var target = event.target || event.srcElement;
         var path = [target.className];
-        while(target.parentElement && target != root){
+        while (target.parentElement && target != root) {
             path.push(target.parentElement.className);
             target = target.parentElement;
         }
-        if(class_name){
+        if (class_name) {
             var target = event.target || event.srcElement;
             if (this.index_of(path, class_name)) {
                 fun(event);
@@ -37,9 +37,11 @@ Duploader.prototype.delegate_document_event = function() {
  */
 Duploader.prototype.delegate_uploader_event = function() {
     var btn_open = document.getElementById(this.config.btn_open);
-    btn_open.addEventListener('click',this.open_uploader.bind(this));
+    btn_open.addEventListener('click', this.open_uploader.bind(this));
     this.runtime.selector.addEventListener("change", this.file_selected.bind(this));
-    this.delegate(this._class.BUTTON_ADD,'click',this.open_select.bind(this));
-    this.delegate(this._class.BUTTON_UPLOAD,'click',this.upload.bind(this));
-    this.delegate(this._class.BUTTON_CANCEL,'click',this.close_uploader.bind(this));
+    this.delegate(this._class.BUTTON_ADD, 'click', this.open_select.bind(this));
+    this.delegate(this._class.BUTTON_UPLOAD, 'click', this.upload.bind(this));
+    this.delegate(this._class.BUTTON_CANCEL, 'click', this.close_uploader.bind(this));
+    this.delegate(this._class.FILE_CHANGE, 'click', this.file_change.bind(this));
+    this.delegate(this._class.FILE_REMOVE, 'click', this.file_remove.bind(this));
 }

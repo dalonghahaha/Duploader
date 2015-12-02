@@ -14,7 +14,7 @@ Duploader.prototype.websocket_init = function(callback) {
     }.bind(this);
 
     this.runtime.socket.onmessage = function(event) {
-        this.debug('websocket recive message');
+        this.debug('websocket recive data');
         this.websocket_message(event.data);
     }.bind(this);
 
@@ -34,7 +34,7 @@ Duploader.prototype.websocket_close = function() {
     if (this.runtime.socket) {
         this.runtime.socket.close();
     } else {
-        this.debug("websocket 未创建");
+        this.debug("websocket no init");
     }
 }
 
@@ -47,7 +47,7 @@ Duploader.prototype.websocket_send = function(data) {
     if (this.runtime.socket && this.runtime.socket.readyState != this.runtime.socket.CLOSING && this.runtime.socket.readyState != this.runtime.socket.CLOSED) {
         this.runtime.socket.send(JSON.stringify(data));
     } else {
-        this.debug("websocket 未创建或者已经关闭");
+        this.debug("websocket no init or is close");
     }
 }
 
@@ -68,26 +68,26 @@ Duploader.prototype.post_send = function(data) {
     this.debug(data);
     var AjaxRequest = new XMLHttpRequest();
     if (!AjaxRequest) {
-        this.error("Ajax请求初始化失败!");
+        this.error("Ajax init faild ");
         return false;
     }　
     AjaxRequest.onreadystatechange = function() {
         switch (AjaxRequest.readyState) {
             case 1:
-                this.debug('ajax打开，准备上传');
+                this.debug('ajax open ready');
                 break;
             case 4:
                 if (AjaxRequest.status == 200) {
-                    this.debug('ajax 收到服务器端数据');
+                    this.debug('ajax recive data');
                     this.post_message(JSON.parse(AjaxRequest.response));
                 } else {
-                    this.error("上传过程出现错误,状态:" + AjaxRequest.status);
+                    this.error("ajax error,status:" + AjaxRequest.status);
                 }
                 break;
         }
     }.bind(this);
     AjaxRequest.error = function() {
-        this.error("上传过程出现错误");
+        this.error("ajax error");
     }.bind(this);
     var UploadForm = new FormData();
     if (UploadForm) {
@@ -97,7 +97,7 @@ Duploader.prototype.post_send = function(data) {
         AjaxRequest.open('POST', this.config.upload_url, true);　
         AjaxRequest.send(UploadForm);
     } else {
-        this.error("上传过程出现错误");
+        this.error("ajax error");
     }
 }
 

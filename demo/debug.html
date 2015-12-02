@@ -24,17 +24,14 @@
 	var uploader = new Duploader({
 	    debug: true,
 	    chunk: true,
+	    multiple: true,
 	    btn_open: 'file_select',
 	    upload_url: "ws://localhost:2345",
     	upload_type: "websocket",
 	});
 	uploader.on('result',function(result){
-		var file_path = document.getElementById("file_path");
-        if (file_path) {
-            file_path.value = result.file_path;
-        }
+		alert('上传完毕');
 	});
 	uploader.on('file_add',function(file_info){
-		this.debug(file_info);
 	})
 </script>
