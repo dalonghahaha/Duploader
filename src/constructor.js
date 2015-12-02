@@ -13,7 +13,7 @@
  */
 function Duploader(config) {
     //初始化配置
-    this.build_config(config);
+    this.init_config(config);
     //检查配置项是否正确
     if(!this.check_config()){
         return;
@@ -23,7 +23,7 @@ function Duploader(config) {
         return;
     }
     //初始化运行时数据
-    this.build_runtime();
+    this.init_runtime();
     //初始化控件
     this.build_uploader();
 }
@@ -47,7 +47,7 @@ Duploader.prototype.set_config = function(config, property, value) {
  * 初始化配置文件
  * @param  config 配置项
  */
-Duploader.prototype.build_config = function(config) {
+Duploader.prototype.init_config = function(config) {
     //默认配置项
     var _config = {
         //是否多文件上传模式
@@ -87,7 +87,7 @@ Duploader.prototype.build_config = function(config) {
 /**
  * 初始化运行时数据
  */
-Duploader.prototype.build_runtime = function() {
+Duploader.prototype.init_runtime = function() {
     this.runtime = {
         //标识
         _id: 0,
@@ -112,7 +112,18 @@ Duploader.prototype.build_runtime = function() {
  * 校验配置文件
  */
 Duploader.prototype.check_config = function() {
-    this.debug(this.config);
+    if(!this.config.btn_open){
+        this.error('btn_open不能为空','config error');
+        return false;
+    }
+    if(!document.getElementById(this.config.btn_open)){
+        this.error('btn_open不存在','config error');
+        return false;
+    }
+    if(!this.config.upload_url){
+        this.error('btn_open不能为空','config error');
+        return false;
+    }
     return true;
 }
 
@@ -120,6 +131,22 @@ Duploader.prototype.check_config = function() {
  * 校验浏览器环境
  */
 Duploader.prototype.check_environment = function() {
-    return true;
+    if(this.config.upload_type === "websocket" && !window.WebSocket){
+        this.error('该浏览器不支持WebSocket','environment error');
+        return false;
+    }
+    if(this.config.upload_type === "post" && !window.XMLHttpRequest){
+        this.error('该浏览器不支持XMLHttpRequest','environment error');
+        return false;
+    }
+    if(this.config.upload_type === "post" && !window.FormData){
+        this.error('该浏览器不支持FormData','environment error');
+        return false;
+    }
+    if(!window.FileReader){
+        this.error('该浏览器不支持FileReader','environment error');
+        return false;
+    }
+    return true;window.FileReader
 }
 

@@ -2,13 +2,11 @@
  * 调试函数
  * @param  info 调试信息
  */
-Duploader.prototype.debug = function(info) {
+Duploader.prototype.debug = function(info,prefix) {
     if (this.config.debug) {
-        if (info instanceof Object) {
-            console.log("Duploader【%s】:%o", this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
-        } else {
-            console.log("Duploader【%s】:%s", this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
-        }
+        var prefix = prefix ? prefix : this.constructor.toLocaleString().match(/function\s*([^(]*)\(/)[1];
+        var format = info instanceof Object ? prefix + "[%s]:%o" : prefix +"[%s]:%s";
+        console.log(format, this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
     }
 }
 
@@ -16,31 +14,27 @@ Duploader.prototype.debug = function(info) {
  * 输出错误信息
  * @param info 错误信息
  */
-Duploader.prototype.error = function(info) {
-    if (info instanceof Object) {
-        console.error("Duploader【%s】:%o", this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
-    } else {
-        console.error("Duploader【%s】:%s", this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
-    }
+Duploader.prototype.error = function(info,prefix) {
+    var prefix = prefix ? prefix : this.constructor.toLocaleString().match(/function\s*([^(]*)\(/)[1];
+    var format = info instanceof Object ? prefix + "[%s]:%o" : prefix +"[%s]:%s";
+    console.error(format, this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
 }
 
 /**
  * 输出警告信息
  * @param info 警告信息
  */
-Duploader.prototype.warn = function(info) {
-    if (info instanceof Object) {
-        console.warn("Duploader【%s】:%o", this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
-    } else {
-        console.warn("Duploader【%s】:%s", this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
-    }
+Duploader.prototype.warn = function(info,prefix) {
+    var prefix = prefix ? prefix : this.constructor.toLocaleString().match(/function\s*([^(]*)\(/)[1];
+    var format = info instanceof Object ? prefix + "[%s]:%o" : prefix +"[%s]:%s";
+    console.warn(format, this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
 }
 
 /**
  * 输出警告信息
  * @param  info [警告信息]
  */
-Duploader.prototype.alert = function(info) {
+Duploader.prototype.alert = function(info,prefix) {
     alert(info);
 }
 

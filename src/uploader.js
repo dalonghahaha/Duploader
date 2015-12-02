@@ -157,11 +157,14 @@ Duploader.prototype.file_slice_upload = function(file_index, slice_count, index)
  * @param  data 上传数据
  */
 Duploader.prototype.file_send = function(data) {
-    var file_info = this.runtime.file_list[data.file_index];
-    var num = parseFloat(data.index + 1);
-    var total = parseFloat(data.total);
-    //显示上传进度
-    this.change_progress_info(file_info.id, this.format_percent(num, total));
+    if(this.config.chunk){
+        var file_info = this.runtime.file_list[data.file_index];
+        var num = parseFloat(data.index + 1);
+        var total = parseFloat(data.total);
+        //显示上传进度
+        this.change_progress_info(file_info.id, this.format_percent(num, total));
+    }
+    
     if (this.config.upload_type == "websocket" && this.runtime.socket) {
         this.websocket_send(data);
     } else {
