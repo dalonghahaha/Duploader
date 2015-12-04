@@ -38,7 +38,12 @@ Duploader.prototype.create_element = function(class_name, inner_text) {
         element.className = class_name;
     }
     if (inner_text) {
-        element.innerText = inner_text;
+        if(this.runtime.browser == "firefox"){
+            element.textContent = inner_text;
+        } else {
+            element.innerText = inner_text;
+        }
+        
     }
     return element;
 }
@@ -135,6 +140,10 @@ Duploader.prototype.build_file_info = function(file_info) {
     this.query_element(this._class.FILE_LIST).remove_class(this._class.HIDDEN);
 }
 
+/**
+ * 构造文件区域
+ * @param  file_info 文件信息
+ */
 Duploader.prototype.build_file_section = function(file_info) {
     var file_section = this.create_element(this._class.FILE_SECTION);
     var file_name = this.create_element(this._class.FILE_INFO, file_info.name + "(" + this.format_size(file_info.size) + ")");
@@ -152,6 +161,10 @@ Duploader.prototype.build_file_section = function(file_info) {
     return file_section;
 }
 
+/**
+ * 构造进度条区域
+ * @param  file_info 文件信息
+ */
 Duploader.prototype.build_progress_section = function(file_info) {
     var progress_section = this.create_element([this._class.PROGRESS_SECTION, this._class.HIDDEN]);
     progress_section.id = 'progress_section_' + file_info.id;
@@ -180,6 +193,10 @@ Duploader.prototype.change_file_info = function(file_info) {
     this.runtime.selector.setAttribute("file_id", 0);
 }
 
+/**
+ * 删除文件信息
+ * @param  file_info 文件信息
+ */
 Duploader.prototype.remove_file_info = function(file_info) {
     var file_section = document.getElementById('file_section_' + file_info.id);
     file_section.parentNode.removeChild(file_section);
@@ -203,7 +220,7 @@ Duploader.prototype.change_progress_info = function(file_id, percent) {
  */
 Duploader.prototype.on_uploader_build = function() {
     //执行ready回调
-    this.trigger('ready');
+    this.trigger(this._event.READY);
     //注册全局事件
     this.delegate_document_event();
     //注册video事件

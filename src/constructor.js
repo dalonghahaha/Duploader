@@ -88,7 +88,10 @@ Duploader.prototype.init_config = function(config) {
  * 初始化运行时数据
  */
 Duploader.prototype.init_runtime = function() {
+    this.debug("browser:" + this.get_user_agent());
     this.runtime = {
+        //浏览器内核
+        browser:this.get_user_agent(),
         //标识
         _id: 0,
         //上传控件实例
@@ -147,6 +150,6 @@ Duploader.prototype.check_environment = function() {
         this.error('该浏览器不支持FileReader','environment error');
         return false;
     }
-    return true;window.FileReader
+    return true;
 }
 

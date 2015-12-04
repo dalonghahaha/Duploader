@@ -1,16 +1,17 @@
 /**
  * 对外提供的事件
  */
-Duploader.prototype._event = [
-    'ready',
-    'file_select',
-    'file_add',
-    'file_change',
-    'file_remove',
-    'upload_begin',
-    'upload_finish',
-    'result',
-];
+Duploader.prototype._event = {
+    READY: 'ready',
+    FILE_SELECT: 'file_select',
+    FILE_ADD: 'file_add',
+    FILE_CHANGE: 'file_change',
+    FILE_REMOVE: 'file_remove',
+    UPLOAD_BEGIN: 'upload_begin',
+    UPLOAD_SLICE: 'upload_slice',
+    UPLOAD_FINISH: 'upload_finish',
+    RESULT: 'result',
+};
 
 /**
  * 事件注册器
@@ -18,7 +19,7 @@ Duploader.prototype._event = [
  * @param  fun        回调函数
  */
 Duploader.prototype.on = function(event_name, fun) {
-    if (this.index_of(this._event, event_name)) {
+    if (this.value_of(this._event, event_name)) {
         if (fun && fun instanceof Function) {
             this.debug("register on_uploader_" + event_name);
             this['on_uploader_' + event_name] = fun;
@@ -34,14 +35,14 @@ Duploader.prototype.on = function(event_name, fun) {
  * 事件触发器
  * @param  event_name 事件名
  */
-Duploader.prototype.trigger = function(event_name,arguments) {
-    if(!this['on_uploader_' + event_name]){
+Duploader.prototype.trigger = function(event_name, arguments) {
+    if (!this['on_uploader_' + event_name]) {
         return false;
     }
 
-    if(!this['on_uploader_' + event_name] instanceof Function){
+    if (!this['on_uploader_' + event_name] instanceof Function) {
         return false;
     }
     this.debug("trigger on_uploader_" + event_name);
-    return this['on_uploader_' + event_name].apply(this,arguments);
+    return this['on_uploader_' + event_name].apply(this, arguments);
 }

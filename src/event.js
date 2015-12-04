@@ -56,7 +56,7 @@ Duploader.prototype.file_added = function(event, file_info) {
         this.runtime.file_id = file_info.id;
     }
     this.build_file_info(file_info);
-    this.trigger('file_add', [file_info]);
+    this.trigger(this._event.FILE_ADD, [file_info]);
 }
 
 /**
@@ -79,7 +79,7 @@ Duploader.prototype.file_changed = function(event, file_info) {
         }
     }
     this.change_file_info(file_info);
-    this.trigger('file_change', [file_info]);
+    this.trigger(this._event.FILE_CHANGE, [file_info]);
 }
 
 /**
@@ -101,7 +101,7 @@ Duploader.prototype.file_removed = function(file_id) {
     }
     this.runtime.file_list = new_file_list;
     this.remove_file_info(file_info);
-    this.trigger('file_remove', [file_info]);
+    this.trigger(this._event.FILE_REMOVE, [file_info]);
 }
 
 /**
@@ -121,7 +121,7 @@ Duploader.prototype.file_upload = function(file_index) {
     } else {
         this.file_whole_upload(file_index);
     }
-    this.trigger('upload_begin', [file_info]);
+    this.trigger(this._event.UPLOAD_BEGIN, [file_info]);
 }
 
 /**
@@ -139,16 +139,12 @@ Duploader.prototype.file_slice_uploaded = function(data) {
         //单个文件上传完毕回调
         this.file_uploaded(data);
     } else {
-
         //记录已经上传完成信息
         this.record_file_broken_point(data);
-
         //开始下一个分片上传
         this.file_slice_upload(data.file_index, data.total, data.index + 1);
     }
-    if (this.config.on_file_slice_finish && this.config.on_file_slice_finish instanceof Function) {
-        this.config.on_file_slice_finish(this, data);
-    }
+    this.trigger(this._event.UPLOAD_SLICE, [data]);
 }
 
 /**
@@ -159,23 +155,18 @@ Duploader.prototype.file_uploaded = function(data) {
     this.debug("event file_uploaded");
     //上传计数
     this.runtime.upload_count += 1;
-
     //上传结果
     var upload_result = {
         'file_index': data.file_index,
         'file_name': data.name,
         'file_path': data.real_url
     }
-
     //记录上传内容
     this.runtime.upload_result.push(upload_result);
-
     //清空断点记录
     this.remove_file_broken_point(data);
-
     //执行单个文件上传完毕通知回调
-    this.trigger('upload_finish', [upload_result]);
-
+    this.trigger(this._event.UPLOAD_FINISH, [data]);
     if (this.runtime.upload_count < this.runtime.file_list.length) {
         //开始上传下一个文件
         this.file_upload(this.runtime.upload_count);
@@ -191,9 +182,9 @@ Duploader.prototype.file_uploaded = function(data) {
 Duploader.prototype.file_list_uploaded = function() {
     this.debug("event file_list_uploaded");
     if (this.config.multiple) {
-        this.trigger('result', [this.runtime.upload_result]);
+        this.trigger(this._event.RESULT, [this.runtime.upload_result]);
     } else {
-        this.trigger('result', [this.runtime.upload_result[0]]);
+        this.trigger(this._event.RESULT, [this.runtime.upload_result[0]]);
     }
     //关闭弹层
     this.close_uploader();

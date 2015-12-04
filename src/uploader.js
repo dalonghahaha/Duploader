@@ -3,8 +3,11 @@
  * event 事件对象
  */
 Duploader.prototype.open_uploader = function(event) {
-    this.query_element(this._class.MASK).style.width = document.body.scrollWidth + "px";
-    this.query_element(this._class.MASK).style.height = document.body.scrollHeight + "px";
+    //this.debug(document.body);
+    //this.debug(document.body.scrollWidth);
+    //this.debug(document.body.scrollHeight);
+    this.query_element(this._class.MASK).style.width = window.screen.availWidth + "px";
+    this.query_element(this._class.MASK).style.height = window.screen.availHeight + "px";
     this.query_element(this._class.OPERATION).style.left = (document.body.scrollWidth - 600) / 2 + "px";
     this.query_element(this._class.OPERATION).style.top = 200 + "px";
     this.query_element(this._class.MASK).remove_class(this._class.HIDDEN);
@@ -42,7 +45,9 @@ Duploader.prototype.open_select = function(event, file_id) {
         this.runtime.selector.setAttribute("file_id", file_id);
     }
     this.runtime.selector.value = '';
-    this.runtime.selector.dispatchEvent(new Event("click"));
+    var evt = document.createEvent("MouseEvents");  
+    evt.initEvent("click", true, true);  
+    this.runtime.selector.dispatchEvent(evt);
 }
 
 /**

@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div style="width:100%">
-		<input type="button" id="file_select_post" value="上传">
+		<input type="button" id="file_select" value="上传">
 		<input style="width:400px" type="text" id="file_path" value="">
 	</div>
 </body>
@@ -21,13 +21,38 @@
 <script type="text/javascript" src="../src/event.js"></script>
 <script type="text/javascript" src="../src/message.js"></script>
 <script type="text/javascript">
-	var post_uploader = new Duploader({
+	var uploader = new Duploader({
 	    debug: true,
-	    btn_open: 'file_select_post',
+	    multiple:true,
+	    chunk:true,
+	    btn_open: 'file_select',
 	    upload_url: "../demo_server/PHP/upload.php",
     	upload_type: "post",
 	});
-	post_uploader.on('result',function(result){
+	uploader.on('ready',function(){
+		this.debug('ready','debug');
+	});
+	uploader.on('file_select',function(file_info){
+		this.debug('file_select','debug');
+	});
+	uploader.on('file_add',function(file_info){
+		this.debug('file_add','debug');
+	});
+	uploader.on('file_change',function(file_info){
+		this.debug('file_change','debug');
+	});
+	uploader.on('file_remove',function(file_info){
+		this.debug('file_remove','debug');
+	});
+	uploader.on('upload_begin',function(file_info){
+		this.debug('upload_begin','debug');
+	});
+	uploader.on('upload_finish',function(file_info){
+		this.debug('upload_finish','debug');
+	});
+	uploader.on('result',function(result){
+		this.debug('result','debug');
 		alert('上传完毕');
+		this.debug(result);
 	});
 </script>

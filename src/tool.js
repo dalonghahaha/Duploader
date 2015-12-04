@@ -2,10 +2,10 @@
  * 调试函数
  * @param  info 调试信息
  */
-Duploader.prototype.debug = function(info,prefix) {
+Duploader.prototype.debug = function(info, prefix) {
     if (this.config.debug) {
         var prefix = prefix ? prefix : this.constructor.toLocaleString().match(/function\s*([^(]*)\(/)[1];
-        var format = info instanceof Object ? prefix + "[%s]:%o" : prefix +"[%s]:%s";
+        var format = info instanceof Object ? prefix + "[%s]:%o" : prefix + "[%s]:%s";
         console.log(format, this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
     }
 }
@@ -14,9 +14,9 @@ Duploader.prototype.debug = function(info,prefix) {
  * 输出错误信息
  * @param info 错误信息
  */
-Duploader.prototype.error = function(info,prefix) {
+Duploader.prototype.error = function(info, prefix) {
     var prefix = prefix ? prefix : this.constructor.toLocaleString().match(/function\s*([^(]*)\(/)[1];
-    var format = info instanceof Object ? prefix + "[%s]:%o" : prefix +"[%s]:%s";
+    var format = info instanceof Object ? prefix + "[%s]:%o" : prefix + "[%s]:%s";
     console.error(format, this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
 }
 
@@ -24,9 +24,9 @@ Duploader.prototype.error = function(info,prefix) {
  * 输出警告信息
  * @param info 警告信息
  */
-Duploader.prototype.warn = function(info,prefix) {
+Duploader.prototype.warn = function(info, prefix) {
     var prefix = prefix ? prefix : this.constructor.toLocaleString().match(/function\s*([^(]*)\(/)[1];
-    var format = info instanceof Object ? prefix + "[%s]:%o" : prefix +"[%s]:%s";
+    var format = info instanceof Object ? prefix + "[%s]:%o" : prefix + "[%s]:%s";
     console.warn(format, this.format_date(new Date(), "yyyy-M-dd hh:mm:ss S"), info);
 }
 
@@ -34,7 +34,7 @@ Duploader.prototype.warn = function(info,prefix) {
  * 输出警告信息
  * @param  info [警告信息]
  */
-Duploader.prototype.alert = function(info,prefix) {
+Duploader.prototype.alert = function(info, prefix) {
     alert(info);
 }
 
@@ -81,8 +81,28 @@ Duploader.prototype.remove_class = function(element, class_name) {
  * @param  待查找元素
  */
 Duploader.prototype.index_of = function(array, find) {
+    if (!array || !find) {
+        return false;
+    }
     var finder = array.join();
     return finder.indexOf(find) >= 0;
+}
+
+/**
+ * 数组查找函数(值查找)
+ * @param  目标数组
+ * @param  待查找元素
+ */
+Duploader.prototype.value_of = function(array, find) {
+    if (!array || !find) {
+        return false;
+    }
+    for (var p in array) {
+        if (array[p] === find) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -280,4 +300,32 @@ Duploader.prototype.css_ready = function(link, callback) {
     (function poll() {
         check() && setTimeout(callback, 0) || setTimeout(poll, 100);
     })();
+}
+
+/**
+ * 获取浏览器内核信息
+ */
+Duploader.prototype.get_user_agent = function(){ 
+    var u = navigator.userAgent;
+    if(u.indexOf('Trident') > -1){
+        return 'IE';
+    } else if(u.indexOf('Presto') > -1){
+        return 'opera';
+    } else if(u.indexOf('AppleWebKit') > -1){
+        return 'webKit';
+    } else if(u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1){
+        return 'firefox';
+    } else if(!!u.match(/AppleWebKit.*Mobile.*/)){
+        return 'mobile';
+    } else if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+        return 'ios';
+    } else if(u.indexOf('Android') > -1 || u.indexOf('Linux') > -1){
+        return 'android';
+    } else if(u.indexOf('iPhone') > -1){
+        return 'iPhone';
+    } else if(u.indexOf('iPad') > -1){
+        return 'iPad';
+    } else if(u.indexOf('Safari') == -1){
+        return 'webApp';
+    }
 }
