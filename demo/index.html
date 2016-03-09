@@ -1,71 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Duploadr Demo</title>
+	<title>Duploader Demo</title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="../theme/default.css">
 </head>
 <body>
-	<h4>单个文件上传</h4>
-	<p>
-		<input type="button" id="file_select" value="添加文件">
-		<input style="margin-left:5px" type="button" id="file_upload" value="开始上传">
+	<div style="width:100%">
 		<input style="width:400px" type="text" id="file_path" value="">
-	</p>
-	<hr>
-	<h4>多个文件上传</h4>
-	<p>
-		<input type="button" id="file_select_multiple" value="添加文件">
-		<input style="margin-left:5px" type="button" id="file_upload_multiple" value="开始上传">
-	</p>
-	<section id="file_list">
-		
-	</section>
-	<hr>
+		<input type="button" id="file_select" value="上传">
+	</div>
 </body>
 </html>
-<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript" src="../lib/Duploader.js"></script>
+<script type="text/javascript" src="../lib/Duploader.min.js"></script>
 <script type="text/javascript">
-
 	var uploader = new Duploader({
-		debug:true,
-		btn_add:'file_select',
-		btn_upload:'file_upload',
-		upload_url: "../demo_server/PHP/upload.php",
+	    btn_open: 'file_select',
+	    multiple: true, 
+	    upload_url: "../demo_server/PHP/upload.php",
     	upload_type: "post",
-    	on_upload_finish:function(result){
-    		$("#file_path").val(result.file_path);
-    	}
 	});
-
-	var uploader_multiple = new Duploader({
-		multiple:true,
-		btn_add:'file_select_multiple',
-		btn_upload:'file_upload_multiple',
-		upload_url: "../demo_server/PHP/upload.php",
-    	upload_type: "post",
-		on_file_add:function(uploader,file_info){
-			var span_file_info = $("<span>").attr("id", "file_info_" + file_info.id).text(file_info.name);
-		    var btn_change = $("<input>").attr("type", "button")
-		    							 .attr("value", "修改")
-		    							 .attr("file_id", file_info.id)
-		    							 .attr("id", "file_change_" + file_info.id)
-		    							 .css("margin-left", "10px");
-		    var btn_delete = $("<input>").attr("type", "button")
-		    							 .attr("value", "删除")
-		    							 .attr("file_id", file_info.id)
-		    							 .attr("id", "file_delete_" + file_info.id)
-		    							 .css("margin-left", "10px");
-		    var section_file_operation = $("<p>").attr("id", "file_section_" + file_info.id).append(span_file_info).append(btn_change).append(btn_delete);
-		    $("#file_list").append(section_file_operation);
-		    $("#file_change_" + file_info.id).on("click", uploader.file_change.bind(uploader));
-		    $("#file_delete_" + file_info.id).on("click", uploader.file_remove.bind(uploader));
-		},
-		on_file_change:function(uploader,file_info,file_index){
-			$("#file_info_" + file_info.id).text(file_info.name);
-		},
-		on_file_remove:function(uploader,file_info,file_index){
-			$("#file_section_" + file_info.id).remove();
-		}
+	uploader.on('result',function(result){
+		alert('上传完毕');
 	});
 </script>
